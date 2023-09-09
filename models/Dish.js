@@ -1,24 +1,28 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
-  
-let dishSchema = new Schema({
+
+let DishSchema = new mongoose.Schema({
   esName: {
-    type: String
+    type: String,
+    required: true,
   },
   enName: {
-    type: String
+    type: String,
+    required: true,
   },
   esLabel: {
-    type: String
+    type: String,
+    required: true,
   },
   enLabel: {
-    type: String
+    type: String,
+    required: true
   },
   cooktime: {
-    type: Number
+    type: Number,
+    required:  true
   }
-}, {
-    collection: 'dishes'
-  })
-  
-module.exports = mongoose.model('Dish', dishSchema)
+});
+
+const Dish = mongoose.model("Dish", DishSchema);
+
+module.exports = { Dish }

@@ -1,53 +1,30 @@
-let express = require('express');
-let mongoose = require('mongoose');
-let cors = require('cors');
-let bodyParser = require('body-parser');
-let dbConfig = require('./database/db');
+const express = require("express");
+const mongoose = require("mongoose");
+const dbConfig = require('./database/db');
 
-// Express Route
-const dishRoute = require('../dish-crud-backend/routes/dish.route')
-
-// Configure mongoDB Database
-// mongoose.set('useNewUrlParser', true);
-// mongoose.set('useFindAndModify', false);
-// mongoose.set('useCreateIndex', true);
-// mongoose.set('useUnifiedTopology', true);
-
-// Connecting MongoDB Database
-mongoose.Promise = global.Promise;
-mongoose.connect(dbConfig.db, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => {
-    console.log('Database successfully connected!')
-},
-    error => {
-        console.log('Could not connect to database : ' + error)
-    }
-)
+const { Dish } = require("./models/Dish");
 
 const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-app.use(cors());
-app.use('/dishes', dishRoute)
 
+app.use(express.json());
 
-// PORT
-const port = process.env.PORT || 4000;
-const server = app.listen(port, () => {
-    console.log('Connected to port ' + port)
-})
-
-// 404 Error
-app.use((req, res, next) => {
-    res.status(404).send('Error 404!')
+app.get("/", async (req, res) => {
+  return res.json({ message: "Hello, World" });
 });
 
-app.use(function (err, req, res, next) {
-    console.error(err.message);
-    if (!err.statusCode) err.statusCode = 500;
-    res.status(err.statusCode).send(err.message);
+app.get("/dishes", async (req, res) => {
+    const allDishes = await Dish.find();
+    return res.status(200).json(allDishes);
 });
+
+const start = async () => {
+  try {
+    await mongoose.connect(dbConfig.db);
+    app.listen(4000, () => console.log("Server started on port 4000"));
+  } catch (error) {
+    console.error(error);
+    process.exit(1);
+  }
+};
+
+start();
