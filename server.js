@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const dbConfig = require('./database/db');
 
 const { Dish } = require("./models/Dish");
@@ -7,6 +8,7 @@ const { Dish } = require("./models/Dish");
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/", async (req, res) => {
     return res.json({ message: "Hello, World" });
@@ -26,12 +28,12 @@ app.get("/dishes/:id", async (req, res) => {
 app.post("/dishes", async (req, res) => {
     const newDish = new Dish({ ...req.body });
     const insertedDish = await newDish.save();
-    return res.status(201).json(insertedDish);
+    return res.status(200).json(insertedDish);
 });
 
 app.put("/dishes/:id", async (req, res) => {
     const { id } = req.params;
-    await Dish.updateOne({ id }, req.body);
+    await Dish.updateOne({ _id: id }, req.body);
     const updatedDish = await Dish.findById(id);
     return res.status(200).json(updatedDish);
 });
