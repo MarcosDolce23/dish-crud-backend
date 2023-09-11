@@ -18,6 +18,15 @@ let DishSchema = new mongoose.Schema({
   },
   cookTime: {
     type: Number,
+  },
+  ingredients: {
+    type: Array,
+  },
+  esRecipe: {
+    type: Array,
+  },
+  enRecipe: {
+    type: Array,
   }
 });
 
