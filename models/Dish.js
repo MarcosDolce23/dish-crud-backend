@@ -27,6 +27,18 @@ let DishSchema = new mongoose.Schema({
   },
   enRecipe: {
     type: Array,
+  },
+  image: {
+    type: String,
+  },
+  base64Image: {
+    type: String,
+  },
+  headerImage: {
+    type: String,
+  },
+  base64Header: {
+    type: String,
   }
 });
 
