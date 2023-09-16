@@ -1,13 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const bodyParser = require('body-parser');
 const dbConfig = require('./database/db');
 
 const { Dish } = require("./models/Dish");
 
 const app = express();
 
-app.use(express.json());
+app.use(express.json({limit: '10mb'}));
 app.use(cors());
 
 app.get("/", async (req, res) => {
